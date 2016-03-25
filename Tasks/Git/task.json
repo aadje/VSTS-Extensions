@@ -1,0 +1,83 @@
+{
+    "id": "15a19766-9b25-439a-b68b-2e15a25edb16",
+    "name": "Git",
+    "friendlyName": "Git",
+    "description": "Deploy with git",
+    "author": "Arjan van Rijn",
+    "helpMarkDown": "Push output to a git repository",
+    "category": "Deploy",
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "demands": [
+        "DotNetFramework"
+    ],
+        "version": {
+        "Major": "1",
+        "Minor": "0",
+        "Patch": "18"
+    },
+    "minimumAgentVersion": "1.83.0",
+    "groups": [
+        {
+            "name": "Git",
+            "displayName": "Remote git respository",
+            "isExpanded": true
+        }
+    ],    
+    "inputs": [
+        {
+            "name": "inputDirectory",
+            "type": "string",
+            "label": "Input directory",
+            "defaultValue": "$(Build.ArtifactStagingDirectory)",
+            "required": true,
+            "helpMarkDown": "The directory which will be committed"
+        },  
+        {
+            "name": "remoteUrl",
+            "type": "string",
+            "label": "Url",
+            "defaultValue": "https://MyAccount.visualstudio.com/DefaultCollection/MyProject/_git/MyRepo",
+            "required": true,
+            "helpMarkDown": "Path to remote git url",
+            "groupName": "Git"
+        },
+        {
+            "name": "remoteBranch",
+            "type": "string",
+            "label": "Branch",
+            "defaultValue": "master",
+            "required": true,
+            "helpMarkDown": "The Branch to commit to",
+            "groupName": "Git"
+        },  
+        {
+            "name": "deploymentUser",
+            "type": "string",
+            "label": "User",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Git login username",
+            "groupName": "Git"
+        },         
+        {
+            "name": "deploymentPassword",
+            "type": "string",
+            "label": "Password",
+            "defaultValue": "$(passwordVariable)",
+            "required": true,
+            "helpMarkDown": "Git login password. Can be set as secret Environment variable ",
+            "groupName": "Git"
+        } 
+  ],
+  "instanceNameFormat": "Sync to remote $(remoteBranch) branch",
+  "execution": {
+    "PowerShell": {
+      "target": "$(currentDirectory)\\Invoke-Git.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}

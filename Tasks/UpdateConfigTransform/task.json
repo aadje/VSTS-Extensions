@@ -1,0 +1,82 @@
+﻿{
+    "id": "99996534-b78a-41ab-8ea1-cf56732327ae",
+    "name": "ConfigTransform",
+    "friendlyName": "Config Transform",
+    "description": "Recursively transform XDT config files in a directory",
+    "author": "Arjan van Rijn",
+    "helpMarkDown": "Recursively transform `*.{environment).config` XDT files in a directory using the [Microsoft Xml Document Transformation (XDT) syntax](https://msdn.microsoft.com/en-us/library/dd465326). This task depends on the Microsoft.Web.XmlTransform.dll assembly, [Nuget](https://www.nuget.org/packages/Microsoft.Web.Xdt), [Source](http://xdt.codeplex.com/).",
+    "category": "Deploy",
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "demands": [
+        "DotNetFramework"
+    ],
+    "version": {
+        "Major": 1,
+        "Minor": 0,
+        "Patch": 22
+    },
+    "minimumAgentVersion": "1.83.0",
+    "groups": [
+        {
+            "name": "advanced",
+            "displayName": "Advanced",
+            "isExpanded": false
+        }
+    ],    
+    "inputs": [
+        {
+            "name": "rootDirectory",
+            "type": "filePath",
+            "label": "Working Directory",
+            "defaultValue": "$(Build.StagingDirectory)",
+            "required": true,
+            "helpMarkDown": "The directory to search for configs"
+        },  
+        {
+            "name": "environmentName",
+            "type": "pickList",
+            "label": "Environment",
+            "required": true,
+            "helpMarkDown": "Environment tranform name `Test`, `Staging`, `Production`",
+            "defaultValue": "Staging",
+            "options": {
+                "Development":"Development",
+                "Test": "Test",
+                "Staging": "Staging",
+                "Acceptance": "Acceptance",
+                "Production": "Production",
+                "Release": "Release",
+                "Debug": "Debug"
+            }
+        },
+        {
+            "name": "microsoftWebXmlTransformAssemblyPath",
+            "type": "string",
+            "label": "XDT assembly path",
+            "defaultValue": "c:\\Program Files (x86)\\MSBuild\\Microsoft\\VisualStudio\\v14.0\\Web\\Microsoft.Web.XmlTransform.dll",
+            "required": true,
+            "helpMarkDown": "File path to the Microsoft.Web.XmlTransform.dll, which is part of Visual Studio and TFS, or can be found on [Nuget](https://www.nuget.org/packages/Microsoft.Web.Xdt), [Source](http://xdt.codeplex.com/)",
+            "groupName": "advanced"
+        },  
+        {
+            "name": "deleteTransformFiles",
+            "type": "boolean",
+            "label": "Delete transform files",
+            "defaultValue": true,
+            "required": true,
+            "helpMarkDown": "Remove the XDT config files after the transform is successful",
+            "groupName": "advanced"
+        }                        
+    ],
+    "instanceNameFormat": "Transform configs to: $(environmentName)",
+    "execution": {
+        "PowerShell": {
+            "target": "$(currentDirectory)\\Update-ConfigTransform.ps1",
+            "argumentFormat": "",
+            "workingDirectory": "$(currentDirectory)"
+        }
+    }
+}

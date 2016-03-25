@@ -1,0 +1,86 @@
+{
+    "id": "59273ad0-87e2-11e5-8c78-ffafd9d5a257",
+    "name": "Wyam",
+    "friendlyName": "Wyam ",
+    "description": "Static content generator",
+    "author": "Arjan van Rijn",
+    "helpMarkDown": "Generate static content using [Wyam](http://Wyam.io)",
+    "category": "Build",
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "demands": [
+        "DotNetFramework"
+    ],
+        "version": {
+        "Major": "1",
+        "Minor": "0",
+        "Patch": "23"
+    },
+    "minimumAgentVersion": "1.83.0",
+    "groups": [
+        {
+            "name": "advanced",
+            "displayName": "Advanced",
+            "isExpanded": true
+        }
+    ],    
+    "inputs": [
+        {
+            "name": "inputDirectory",
+            "type": "filePath",
+            "label": "Path to input files",
+            "defaultValue": "input",
+            "required": true,
+            "helpMarkDown": "The directory to used as Wyam input"
+        },  
+        {
+            "name": "outputDirectory",
+            "type": "string",
+            "label": "Path to output files",
+            "defaultValue": "$(Build.ArtifactStagingDirectory)",
+            "required": true,
+            "helpMarkDown": "Path to the static file output"
+        },
+        {
+            "name": "wyamVersion",
+            "type": "pickList",
+            "label": "Version",
+            "required": true,
+            "helpMarkDown": "Version ",
+            "defaultValue": "Latest",
+            "options": {
+                "v0.11.1-beta":"v0.11.1-beta",
+                "Latest": "Latest",
+                "Local": "Local"
+            }
+        },  
+        {
+            "name": "configPath",
+            "type": "string",
+            "label": "Config path",
+            "defaultValue": "$(Build.SourcesDirectory)\\config.wyam",
+            "required": true,
+            "helpMarkDown": "Configuration filepath which defaults to config.wyam",
+            "groupName": "advanced"
+        },         
+        {
+            "name": "wyamPath",
+            "type": "string",
+            "label": "Wyam path",
+            "defaultValue": "",
+            "required": false,
+            "helpMarkDown": "Optional filepath to Wyam.exe",
+            "groupName": "advanced"
+        } 
+  ],
+  "instanceNameFormat": "Generate static content",
+  "execution": {
+    "PowerShell": {
+      "target": "$(currentDirectory)\\Invoke-Wyam.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}

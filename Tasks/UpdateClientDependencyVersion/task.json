@@ -1,0 +1,40 @@
+﻿{
+    "id": "dac4676b-3ea2-4000-8f36-140b350bd7b1",
+    "name": "UpdateClientDependencyVersion",
+    "friendlyName": "ClientDependency version",
+    "description": "Recursively increment the version number",
+    "author": "Arjan van Rijn",
+    "helpMarkDown": "Recursively search for `ClientDependency.config` files in a directory. Update the version number to invalidate the javascript and css resource bundles. [ClientDependency](https://github.com/Shazwazza/ClientDependency).",
+    "category": "Deploy",
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "demands": [
+        "DotNetFramework"
+    ],
+    "version": {
+        "Major": 1,
+        "Minor": 0,
+        "Patch": 26
+    },
+    "minimumAgentVersion": "1.83.0",
+    "inputs": [
+        {
+            "name": "rootDirectory",
+            "type": "filePath",
+            "label": "Working Directory",
+            "defaultValue": "$(Build.StagingDirectory)",
+            "required": true,
+            "helpMarkDown": "The directory to search for configs"
+        }                    
+    ],
+    "instanceNameFormat": "Increment ClientDependency version",
+    "execution": {
+        "PowerShell": {
+            "target": "$(currentDirectory)\\Update-ClientDependencyVersion.ps1",
+            "argumentFormat": "",
+            "workingDirectory": "$(currentDirectory)"
+        }
+    }
+}

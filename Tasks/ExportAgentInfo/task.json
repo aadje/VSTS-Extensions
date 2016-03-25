@@ -1,0 +1,40 @@
+{
+  "id": "43712eaf-ccfb-4665-8ac8-3c7b0d18583d",
+  "name": "ExportAgentInfo",
+  "friendlyName": "ExportAgentInfo",
+  "description": "Export environment info",
+  "author": "Arjan van Rijn",
+  "helpMarkDown": "Export environment variables and powershell modules loaded in the Agent for debugging",
+  "category": "Deploy",
+  "visibility": [
+    "Build",
+    "Release"
+  ],
+  "demands": [
+    "DotNetFramework"
+  ],
+  "version": {
+    "Major": "1",
+    "Minor": "0",
+    "Patch": "8"
+  },
+  "minimumAgentVersion": "1.83.0",
+  "inputs": [
+      {
+          "name": "outFile",
+          "type": "string",
+          "label": "Output file",
+          "defaultValue": "$(Build.Artifactstagingdirectory)\\TFSExportAgentInfo.md",
+          "required": true,
+          "helpMarkDown": "Path to the markdown output file"
+      }    
+  ],
+  "instanceNameFormat": "Export buildagent info as artifact",
+  "execution": {
+    "PowerShell": {
+      "target": "$(currentDirectory)\\Export-AgentInfo.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}
