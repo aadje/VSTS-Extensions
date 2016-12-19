@@ -1,0 +1,69 @@
+﻿{
+    "id": "3263022b-1cfe-4fbf-93e8-5f8acd4150d1",
+    "name": "DownloadAssemblaFile",
+    "friendlyName": "Download Assembla file",
+    "description": "Download a file from the Assembla wiki api and output it on disk ",
+    "author": "Arjan van Rijn",
+    "helpMarkDown": "Download assembla content",
+    "category": "Deploy",
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "demands": [
+        "DotNetFramework"
+    ],
+    "version": {
+        "Major": 2,
+        "Minor": 0,
+        "Patch": 4
+    },
+    "minimumAgentVersion": "1.83.0",
+    "groups": [
+        {
+            "name": "Assembla",
+            "displayName": "Assembla",
+            "isExpanded": true
+        }
+    ],    
+    "inputs": [
+        {
+            "name": "AssemblaApiEndpoint",
+            "type": "connectedService:Generic",
+            "label": "Assembla Api Connection",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "The connection to the Assembla rest api"
+        }, 
+        {
+            "name": "SpaceId",
+            "type": "string",
+            "label": "Space Name",
+            "required": true,
+            "helpMarkDown": "The id/name of the Assemla space",
+            "groupName": "Assembla"
+        },
+        {
+            "name": "WikiPageId",
+            "type": "string",
+            "label": "Wiki Page Id",
+            "required": true,
+            "helpMarkDown": "The id of the wiki page which is tricky to find and should look like 'b2cJauU6yr5QzTacwqjQXC'. Can be found in the assembla html source or using the api",
+            "groupName": "Assembla"
+        },
+        {
+            "name": "OutputFilePath",
+            "type": "string",
+            "label": "Output FilePath",
+            "defaultValue": "$(Build.Artifactstagingdirectory)\\deployment-notes.txt",
+            "required": true,
+            "helpMarkDown": "The file to output"
+        }
+    ],
+    "instanceNameFormat": "Include Assembla file from $(spaceId)",
+    "execution": {
+        "PowerShell3": {
+            "target": "$(currentDirectory)\\Get-AssemblaFile.ps1"
+        }        
+    }
+}

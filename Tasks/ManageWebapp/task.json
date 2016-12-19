@@ -1,0 +1,120 @@
+﻿{
+    "id": "88886534-b78a-41ab-8ea1-cf56732327ae",
+    "name": "ManageWebApp",
+    "friendlyName": "Azure Web App Management",
+    "description": "Swap slot, Start or Stop an Azure Web App",
+    "author": "Arjan van Rijn",
+    "helpMarkDown": "",
+    "category": "Deploy",
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "demands": [
+        "azureps"
+    ],
+    "version": {
+        "Major": 1,
+        "Minor": 2,
+        "Patch": 0
+    },
+    "minimumAgentVersion": "1.95.0",
+    "inputs": [
+        {
+            "name": "ConnectedServiceName",
+            "type": "connectedService:AzureRM",
+            "label": "AzureRM Subscription",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Select the Azure Resource Manager subscription for the deployment."
+        },
+        {
+            "name": "WebAppName",
+            "type": "pickList",
+            "label": "Web App Name",
+            "defaultValue": "",
+            "required": true,
+            "properties": {
+                "EditableOptions": "True"
+            },
+            "helpMarkDown": "Enter or Select the name of an existing AzureRM Web Application."
+        },
+        {
+            "name": "Task",
+            "type": "pickList",
+            "label": "Task",
+            "required": true,
+            "defaultValue": "Start",
+            "helpMarkDown": "The action to perfom on the Web App",
+            "options": {
+                "Swap Slot": "Swap Slot",
+                "Start": "Start",
+                "Stop": "Stop",
+                "Restart": "Restart"
+            }
+        },            
+        {
+            "name": "ManageSlotFlag",
+            "type": "boolean",
+            "label": "Manage Slot",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "Select the option to Manage an existing slot other than the Production slot. If this option is not selected the Task is executed against the Production slot."
+        },
+        {
+            "name": "ResourceGroupName",
+            "type": "pickList",
+            "label": "Resource Group",
+            "defaultValue": "",
+            "required": true,
+            "properties": {
+                "EditableOptions": "True"
+            },
+            "helpMarkDown": "Enter or Select the Azure Resource Group that contains the AzureRM Web App specified above.",
+            "visibleRule": "ManageSlotFlag = true"
+        },
+        {
+            "name": "SlotName",
+            "type": "pickList",
+            "label": "Slot",
+            "defaultValue": "",
+            "required": true,
+            "properties": {
+                "EditableOptions": "True"
+            },
+            "helpMarkDown": "Enter or Select an existing Slot other than the Production slot.",
+            "visibleRule": "ManageSlotFlag = true"
+        }       
+    ],
+    "dataSourceBindings": [
+        {
+            "target": "WebAppName",
+            "endpointId": "$(ConnectedServiceName)",
+            "dataSourceName": "AzureRMWebAppNames"
+        },
+        {
+            "target": "ResourceGroupName",
+            "endpointId": "$(ConnectedServiceName)",
+            "dataSourceName": "AzureRMWebAppResourceGroup",
+            "parameters": {
+                "WebAppName": "$(WebAppName)"
+            }
+        },
+        {
+            "target": "SlotName",
+            "endpointId": "$(ConnectedServiceName)",
+            "dataSourceName": "AzureRMWebAppSlotsId",
+            "parameters": {
+                "WebAppName": "$(WebAppName)",
+                "ResourceGroupName": "$(ResourceGroupName)"
+            },
+            "resultTemplate": "{\"Value\":\"{{{ #extractResource slots}}}\",\"DisplayValue\":\"{{{ #extractResource slots}}}\"}"
+        }
+    ],    
+    "instanceNameFormat": "$(Task) $(WebAppName) Web App $(SlotName)",
+    "execution": {
+        "PowerShell3": {
+            "target": "$(currentDirectory)\\Update-Webapp.ps1"
+        }
+    }
+}

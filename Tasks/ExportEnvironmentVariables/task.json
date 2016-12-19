@@ -1,0 +1,56 @@
+{
+  "id": "11d66388-1af0-4788-99e5-d361b9ea481a",
+  "name": "ExportEnvironmentVariables",
+  "friendlyName": "Export version info to a json file",
+  "description": "Export the Source version and other Build information tp a json file using the envrionment variables.",
+  "author": "Arjan van Rijn",
+  "helpMarkDown": "Export the Source version and other Build information tp a json file using the envrionment variables.",
+  "category": "Build",
+  "visibility": [
+    "Build",
+    "Release"
+  ],
+  "demands": [
+    "DotNetFramework"
+  ],
+  "version": {
+    "Major": "1",
+    "Minor": "0",
+    "Patch": "10"
+  },
+  "minimumAgentVersion": "1.91.0",
+  "inputs": [
+      {
+          "name": "variables",
+          "type": "multiLine",
+          "label": "Variables",
+          "defaultValue": "*",
+          "required": true,
+          "helpMarkDown": "The environment variables to match. Use 1 line per variable. Wildcards supported."
+      },  
+      {
+          "name": "outFile",
+          "type": "multiLine",
+          "label": "Output files",
+          "defaultValue": "$(Build.Artifactstagingdirectory)\\versioninfo.json",
+          "required": true,
+          "helpMarkDown": "Path to the json outpit file. For multiple paths use newlines"
+      },
+      {
+          "name": "addCreateDate",
+          "type": "boolean",
+          "label": "Add Create Date",
+          "defaultValue": true,
+          "required": true,
+          "helpMarkDown": "Adds an extra 'CREATE_DATE' timestamp property with the current DateTime"
+      }        
+  ],
+  "instanceNameFormat": "Export Environment Variables",
+  "execution": {
+    "PowerShell": {
+      "target": "$(currentDirectory)\\Export-ExportEnvironmentVariables.ps1",
+      "argumentFormat": "",
+      "workingDirectory": "$(currentDirectory)"
+    }
+  }
+}
