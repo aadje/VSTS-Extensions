@@ -1,0 +1,121 @@
+﻿{
+    "id": "0c10947a-bca2-470f-85a9-2d7b8dfe0632",
+    "name": "WinSCP",
+    "friendlyName": "WinSCP ftp file upload",
+    "description": "SFTP, SCP and FTP client using the WinSCP libary on Windows used from Powershell",
+    "author": "Arjan van Rijn",
+    "helpMarkDown": "SFTP, SCP and FTP client. Uses [winscp](https://winscp.net) and is in essence a wrapper around the [Session.Putfiles](https://winscp.net/eng/docs/library_session_putfiles) method. Putfiles overwrites existing remote files by default. Protocol and port should be specified in the Ftp connection address.",
+    "category": "Utility",
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "demands": [
+        "DotNetFramework"
+    ],
+    "version": {
+        "Major": 2,
+        "Minor": 0,
+        "Patch": 13
+    },
+    "minimumAgentVersion": "1.83.0",
+    "groups": [
+        {
+            "name": "Advanced",
+            "displayName": "Advanced",
+            "isExpanded": true
+        }     
+    ],      
+    "inputs": [
+        {
+            "name": "ConnectionType",
+            "type": "pickList",
+            "label": "Connection Type",
+            "required": true,
+            "defaultValue": "FTP",
+            "helpMarkDown": "FTP or SSH connection",
+            "options": {
+                "SSH": "SSH",
+                "FTP": "FTP"
+            }
+        }, 
+        {
+            "name": "FtpEndpoint",
+            "type": "connectedService:Generic",
+            "label": "FTP Connection",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "The Ftp connection to use. Should contain the Ftp protocol and port number",
+            "visibleRule": "ConnectionType = FTP"
+        }, 
+        {
+            "name": "SshEndpoint",
+            "type": "connectedService:ssh",
+            "label": "SSH endpoint",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "SSH endpoint with connection details for the remote machine.",
+            "visibleRule": "ConnectionType = SSH"
+        },        
+        {
+            "name": "InputFilePath",
+            "type": "string",
+            "label": "Input FilePath",
+            "required": true,
+            "helpMarkDown": "The file to upload"
+        },
+        {
+            "name": "RemotePath",
+            "type": "string",
+            "label": "Remote Path",
+            "defaultValue": "/",
+            "required": true,
+            "helpMarkDown": "The remote folder path on the server"
+        },        
+        {
+            "name": "FtpSecure",
+            "type": "pickList",
+            "label": "Encryption",
+            "defaultValue": "None",
+            "required": true,
+            "options": {
+                "None":"None",
+                "Implicit": "Implicit",
+                "Explicit": "Explicit"
+            },      
+            "properties": {
+                "EditableOptions": "True"
+            },                  
+            "helpMarkDown": "TLS/SSL Implicit encryption, TLS/SSL explicit encryption or No encyption. Based on the WinSCP.FtpSecure enumeration.",
+            "visibleRule": "ConnectionType = FTP"
+        },
+        {
+            "name": "FtpMode",
+            "type": "pickList",
+            "label": "Connection mode",
+            "defaultValue": "Passive",
+            "required": true,
+            "options": {
+                "Passive":"Passive",
+                "Active": "Active"
+            },              
+            "helpMarkDown": "Passive or Active ftp connection mode. Based on the WinSCP.FtpMode enumeration.",
+            "visibleRule": "ConnectionType = FTP"
+        },
+        {
+            "name": "TestInputFilePath",
+            "type": "boolean",
+            "label": "Test the Input FilePath",
+            "defaultValue": true,
+            "required": true,
+            "helpMarkDown": "Test if the input file path exists and fail the task if not. Disabling this allows for using the WinSCP Session.Putfiles Wilcard support ( * and ? )",
+            "groupName": "Advanced"
+        }
+    ],
+    "instanceNameFormat": "File upload",
+    "execution": {
+        "PowerShell3": {
+            "target": "$(currentDirectory)\\Copy-WinSCPFile.ps1"
+        }        
+    }
+}
