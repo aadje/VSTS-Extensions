@@ -23,7 +23,7 @@ function Test-Any {
     }
 }
 
-$result = @{}
+$result = [ordered]@{}
 $params = $variables.Split([Environment]::NewLine, [StringSplitOptions]::RemoveEmptyEntries)
 $files = $outFiles.Split([Environment]::NewLine, [StringSplitOptions]::RemoveEmptyEntries)
 $addCreateDateBool = [System.Convert]::ToBoolean($addCreateDate)
@@ -36,7 +36,7 @@ dir env: | where {
     $params | Test-Any { 
         select-string -Pattern $_.ToLower() -InputObject $envParam 
     }
-} | foreach { 
+} | Sort Key | foreach { 
     $result.Add($_.Key, $_.Value)
     Write-Host "$($_.Key) : $($_.Value)"
 }
