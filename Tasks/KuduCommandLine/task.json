@@ -1,0 +1,84 @@
+﻿{
+    "id": "db49e6c4-435e-41e2-94b4-7713a8b41a8c",
+    "name": "KuduCommandLine",
+    "friendlyName": "Kudu command line",
+    "description": "Execute a shell command using the Command endpoint in the Kudu rest api",
+    "author": "Arjan van Rijn",
+    "helpMarkDown": "Kudu is the deployment engine behind the Azure Appservice. This task can be used to execute arbitrary shell commands using the Command endpoint in the Kudu rest api. This is useful for running Package manager restore commands after deployment. [Deployment-credentials](https://github.com/projectkudu/kudu/wiki/Deployment-credentials), [Kudu-rest-api](https://github.com/projectkudu/kudu/wiki/REST-API#command)",
+    "category": "Deploy",
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "demands": [
+        "DotNetFramework"
+    ],
+    "version": {
+        "Major": 1,
+        "Minor": 0,
+        "Patch": 5
+    },
+    "minimumAgentVersion": "1.83.0",
+    "groups": [
+        {
+            "name": "advanced",
+            "displayName": "Advanced",
+            "isExpanded": false
+        }
+    ],    
+    "inputs": [
+        {
+            "name": "appserviceName",
+            "type": "string",
+            "label": "AppService name",
+            "required": true,
+            "helpMarkDown": "This is the first part of your .azurewebsite.net url"
+        },          
+        {
+            "name": "username",
+            "type": "string",
+            "label": "Username",
+            "required": true,
+            "helpMarkDown": "Site-level credentials username (aka Publish Profile Credentials), Consists of '$' + Appservice name"  
+        },  
+        {
+            "name": "password",
+            "type": "string",
+            "label": "Password",
+            "required": true,
+            "helpMarkDown": "Site-level credentials password (aka Publish Profile Credentials)"
+        },
+        {
+            "name": "command",
+            "type": "string",
+            "label": "Command",
+            "required": true,
+            "helpMarkDown": "The command to run in the [command  rest api](https://github.com/projectkudu/kudu/wiki/REST-API#command)"
+        },
+        {
+            "name": "dir",
+            "type": "string",
+            "label": "Dir",
+            "defaultValue": "site/wwwroot",
+            "required": true,
+            "helpMarkDown": "The working directory for the command"
+        },        
+        {
+            "name": "timeout",
+            "type": "string",
+            "label": "timeout",
+            "required": true,
+            "defaultValue": "1800",
+            "helpMarkDown": "The webrequest timeout",
+            "groupName": "advanced"
+        }           
+    ],
+    "instanceNameFormat": "Kudu run $(command)",
+    "execution": {
+        "PowerShell": {
+            "target": "$(currentDirectory)\\Invoke-KuduCommandLine.ps1",
+            "argumentFormat": "",
+            "workingDirectory": "$(currentDirectory)"
+        }
+    }
+}
