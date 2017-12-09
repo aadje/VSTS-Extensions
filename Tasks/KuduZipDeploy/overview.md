@@ -10,5 +10,5 @@ The Kudu Github Wiki contains more information about this zipdeploys
 
 ## Usage
 
-Use a Connected ARM Service to select an App Service or a deployment slot in your Azure subscription.  
-Add the path to a zip file which can be created in another task.
+Use a Connected ARM Service to select an App Service and optional deployment slot in your Azure subscription.  
+Add the path to a zip file. The zip file can be created in your pipeline using any task or script.
