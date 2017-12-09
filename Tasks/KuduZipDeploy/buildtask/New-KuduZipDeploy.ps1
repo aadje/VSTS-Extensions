@@ -56,10 +56,17 @@ $header = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes($header))
 $header = "Basic $header"
 $headers = @{"Authorization"=$header;"If-Match"="*"}
 
-write-host "start uploading to: $requestUri"
 $requestUri = "https://$WebAppName.scm.azurewebsites.net/api/zipdeploy"  #?isAsync=true / $response.Headers.Location
-    
-$response = Invoke-WebRequest -Uri $requestUri -Headers $headers -Method Post -InFile $InputFilePath -ContentType "multipart/form-data"
-Write-Host "Response:"
-Write-Output $response
+write-host "Upload to: $requestUri"
+
+$response = Invoke-WebRequest `
+    -Uri $requestUri `
+    -Headers $headers `
+    -Method Post `
+    -InFile $InputFilePath `
+    -ContentType "multipart/form-data" `
+    -ErrorAction SilentlyContinue `
+    -UseBasicParsing
+
+Write-Host "Response: $($response.StatusCode) $($response.StatusDescription) `n$($response.Content)"
 Write-Host "Deployment logs at: https://$WebAppName.scm.azurewebsites.net/api/deployments"
