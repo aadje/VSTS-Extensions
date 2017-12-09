@@ -60,7 +60,7 @@ $headers = @{"Authorization"=$header;"If-Match"="*"}
 
 $requestUri = "https://$WebAppName.scm.azurewebsites.net/api/zipdeploy" 
 if($IsAsync){
-    $requestUri + "?isAsync=true"
+    $requestUri = $requestUri + "?isAsync=true"
 }
 
 write-host "Upload to: $requestUri"
