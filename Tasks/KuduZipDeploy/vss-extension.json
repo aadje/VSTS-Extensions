@@ -1,7 +1,7 @@
 {
     "manifestVersion": 1,
     "id": "kudu-zipdeploy",
-    "version": "1.0.6",
+    "version": "0.0.0",
     "name": "Kudu ZipDeploy",
     "publisher": "arjanvanrijn",
     "public": false,
