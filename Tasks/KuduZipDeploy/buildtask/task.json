@@ -77,6 +77,14 @@
             "label": "Zip FilePath",
             "required": true,
             "helpMarkDown": "The Zip package to upload"
+        },
+        {
+            "name": "IsAsync",
+            "type": "boolean",
+            "label": "Is Async",
+            "defaultValue": "false",
+            "required": false,
+            "helpMarkDown": "The task will complete after the Zip file is uploaded. Kudu will continue to run the deployment asynchronously."
         }
     ],
     "dataSourceBindings": [

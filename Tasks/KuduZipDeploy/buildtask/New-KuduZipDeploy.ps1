@@ -8,6 +8,7 @@ $ManageSlotFlag = Get-VstsInput -Name ManageSlotFlag -AsBool
 $ResourceGroupName = Get-VstsInput -Name ResourceGroupName
 $SlotName = Get-VstsInput -Name SlotName
 $InputFilePath = Get-VstsInput -Name InputFilePath
+$IsAsync = Get-VstsInput -Name IsAsync -AsBool
 
 Write-Host "ConnectedServiceName $ConnectedServiceName"
 Write-Host "WebAppName $WebAppName"
@@ -15,6 +16,7 @@ Write-Host "ManageSlotFlag $ManageSlotFlag"
 Write-Host "ResourceGroupName $ResourceGroupName"
 Write-Host "SlotName $SlotName"
 Write-Host "InputFilePath $InputFilePath"
+Write-Host "IsAsync $IsAsync"
 
 if($ManageSlotFlag -and -not $SlotName){
     throw "$SlotName parameter needed for $Task"
@@ -56,7 +58,11 @@ $header = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes($header))
 $header = "Basic $header"
 $headers = @{"Authorization"=$header;"If-Match"="*"}
 
-$requestUri = "https://$WebAppName.scm.azurewebsites.net/api/zipdeploy"  #?isAsync=true / $response.Headers.Location
+$requestUri = "https://$WebAppName.scm.azurewebsites.net/api/zipdeploy" 
+if($IsAsync){
+    $requestUri + "?isAsync=true"
+}
+
 write-host "Upload to: $requestUri"
 
 $response = Invoke-WebRequest `
@@ -69,4 +75,9 @@ $response = Invoke-WebRequest `
     -UseBasicParsing
 
 Write-Host "Response: $($response.StatusCode) $($response.StatusDescription) `n$($response.Content)"
-Write-Host "Deployment logs at: https://$WebAppName.scm.azurewebsites.net/api/deployments"
+
+if(-not $IsAsync){
+    Write-Host "Deployment logs at: https://$WebAppName.scm.azurewebsites.net/api/deployments"
+} elseif ($response.StatusCode -eq 200) {
+    Write-Host "Deployment progess at: $($response.Headers.Location)"
+}
