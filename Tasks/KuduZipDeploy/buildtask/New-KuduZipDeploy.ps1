@@ -63,7 +63,7 @@ if($IsAsync){
     $requestUri = $requestUri + "?isAsync=true"
 }
 
-write-host "Upload to: $requestUri"
+write-host "Uploading to $requestUri ..."
 
 $response = Invoke-WebRequest `
     -Uri $requestUri `
@@ -77,7 +77,7 @@ $response = Invoke-WebRequest `
 Write-Host "Response: $($response.StatusCode) $($response.StatusDescription) `n$($response.Content)"
 
 if(-not $IsAsync){
-    Write-Host "Deployment logs at: https://$WebAppName.scm.azurewebsites.net/api/deployments"
-} elseif ($response.StatusCode -eq 200) {
-    Write-Host "Deployment progess at: $($response.Headers.Location)"
+    Write-Host "Deployment logs at https://$WebAppName.scm.azurewebsites.net/api/deployments"
+} elseif ($response.StatusCode -eq 202) {
+    Write-Host "Deployment is running at location $($response.Headers.Location)"
 }
