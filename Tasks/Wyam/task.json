@@ -16,7 +16,7 @@
         "version": {
         "Major": "1",
         "Minor": "0",
-        "Patch": "23"
+        "Patch": "26"
     },
     "minimumAgentVersion": "1.83.0",
     "groups": [
@@ -51,8 +51,26 @@
             "helpMarkDown": "Version ",
             "defaultValue": "Latest",
             "options": {
-                "v0.11.1-beta":"v0.11.1-beta",
                 "Latest": "Latest",
+                "v0.14.1-beta":"v0.14.1-beta",
+                "v0.14.0-beta":"v0.14.0-beta",
+                "v0.13.5-beta":"v0.13.5-beta",
+                "v0.13.4-beta":"v0.13.4-beta",
+                "v0.13.3-beta":"v0.13.3-beta",
+                "v0.13.2-beta":"v0.13.2-beta",
+                "v0.13.1-beta":"v0.13.1-beta",
+                "v0.13.0-beta":"v0.13.0-beta",
+                "v0.12.4-beta":"v0.12.4-beta",
+                "v0.12.3-beta":"v0.12.3-beta",
+                "v0.12.2-beta":"v0.12.2-beta",
+                "v0.12.1-beta":"v0.12.1-beta",
+                "v0.12.0-beta":"v0.12.0-beta",
+                "v0.11.5-beta":"v0.11.5-beta",
+                "v0.11.4-beta":"v0.11.4-beta",
+                "v0.11.3-beta":"v0.11.3-beta",
+                "v0.11.2-beta":"v0.11.2-beta",
+                "v0.11.1-beta":"v0.11.1-beta",
+                "v0.11.0-beta":"v0.11.0-beta",
                 "Local": "Local"
             }
         },  

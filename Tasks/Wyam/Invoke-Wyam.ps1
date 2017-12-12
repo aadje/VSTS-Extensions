@@ -7,7 +7,7 @@ param
     [string] [Parameter(Mandatory=$true)]
     $outputDirectory,
     
-    [string] [Parameter(Mandatory=$false)] [ValidateSet('v0.11.1-beta','Latest','Local')]
+    [string] [Parameter(Mandatory=$false)]
     $wyamVersion = 'Latest',
 
     [string] [Parameter(Mandatory=$false)]
@@ -80,10 +80,6 @@ else
 
     switch ($wyamVersion) 
     { 
-        v0.11.1-beta 
-        { 
-            $wyamExecPath = Invoke-WyamDownload 'v0.11.1-beta' 
-        }
         Latest 
         { 
             $wc = New-Object System.Net.WebClient
@@ -102,7 +98,9 @@ else
                 throw 'Local Wyam.exe not found on Path'
             }
         } 
-        default { throw "Wyam version $wyamVersion not supported" }
+        default { 
+            $wyamExecPath = Invoke-WyamDownload $wyamVersion
+        }
     }
 }
 
