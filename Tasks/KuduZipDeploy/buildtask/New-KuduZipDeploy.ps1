@@ -45,7 +45,7 @@ $app = $apps | Select-Object -First 1
 if($ManageSlotFlag){
     $requestUri = "https://$WebAppName`-$SlotName.scm.azurewebsites.net/api/zipdeploy"
     $resourceType = "Microsoft.Web/sites/slots/config"
-    $resourceName = "$WebAppName/$WebAppName-$SlotName/publishingcredentials"
+    $resourceName = "$WebAppName/$SlotName/publishingcredentials"
 } else{
     $requestUri = "https://$WebAppName.scm.azurewebsites.net/api/zipdeploy"
     $resourceType = "Microsoft.Web/sites/config"
