@@ -40,10 +40,18 @@ $apps = Get-AzureRmWebApp -Name $WebAppName
 if($apps.Count -ne 1){
     throw "$WebAppName not found"
 }
-$app = $apps | select -First 1
+$app = $apps | Select-Object -First 1
 
-$resourceType = "Microsoft.Web/sites/config"
-$resourceName = "$WebAppName/publishingcredentials"
+if($ManageSlotFlag){
+    $requestUri = "https://$WebAppName`-$SlotName.scm.azurewebsites.net/api/zipdeploy"
+    $resourceType = "Microsoft.Web/sites/slots/config"
+    $resourceName = "$WebAppName/$WebAppName-$SlotName/publishingcredentials"
+} else{
+    $requestUri = "https://$WebAppName.scm.azurewebsites.net/api/zipdeploy"
+    $resourceType = "Microsoft.Web/sites/config"
+    $resourceName = "$WebAppName/publishingcredentials"
+}
+
 $publishingCredentials = Invoke-AzureRmResourceAction -ResourceGroupName $app.ResourceGroup -ResourceType $resourceType -ResourceName $resourceName -Action list -ApiVersion 2015-08-01 -Force
 
 $header = "{0}:{1}" -f $publishingCredentials.Properties.PublishingUserName, $publishingCredentials.Properties.PublishingPassword
@@ -51,11 +59,6 @@ $header = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes($header))
 $header = "Basic $header"
 $headers = @{"Authorization"=$header;"If-Match"="*"}
 
-if($ManageSlotFlag){
-    $requestUri = "https://$WebAppName`-$SlotName.scm.azurewebsites.net/api/zipdeploy"
-} else{
-    $requestUri = "https://$WebAppName.scm.azurewebsites.net/api/zipdeploy"
-}
 if($IsAsync){
     $requestUri = $requestUri + "?isAsync=true"
 }
