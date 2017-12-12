@@ -42,13 +42,6 @@ if($apps.Count -ne 1){
 }
 $app = $apps | select -First 1
 
-if($ManageSlotFlag){
-    $kuduApiUri = "https://$WebAppName`-$SlotName.scm.azurewebsites.net"
-}
-else{
-    $kuduApiUri = "https://$WebAppName.scm.azurewebsites.net/api"
-}
-
 $resourceType = "Microsoft.Web/sites/config"
 $resourceName = "$WebAppName/publishingcredentials"
 $publishingCredentials = Invoke-AzureRmResourceAction -ResourceGroupName $app.ResourceGroup -ResourceType $resourceType -ResourceName $resourceName -Action list -ApiVersion 2015-08-01 -Force
@@ -58,7 +51,11 @@ $header = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes($header))
 $header = "Basic $header"
 $headers = @{"Authorization"=$header;"If-Match"="*"}
 
-$requestUri = "https://$WebAppName.scm.azurewebsites.net/api/zipdeploy" 
+if($ManageSlotFlag){
+    $requestUri = "https://$WebAppName`-$SlotName.scm.azurewebsites.net/api/zipdeploy"
+} else{
+    $requestUri = "https://$WebAppName.scm.azurewebsites.net/api/zipdeploy"
+}
 if($IsAsync){
     $requestUri = $requestUri + "?isAsync=true"
 }
