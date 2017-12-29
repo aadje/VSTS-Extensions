@@ -42,6 +42,4 @@ Run commandline commands on Kudu using the [command api](https://github.com/proj
 
 Dump all environment variables and available Powershelll cmdlets in a textfile for debugging a Build agent
 
-### More
-
 
