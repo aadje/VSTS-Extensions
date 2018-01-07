@@ -86,7 +86,7 @@
             "required": true,
             "options": {
                 "ZipDeploy":"ZipDeploy",
-                "Zip": "Zip",
+                "Zip": "Zip"
             },      
             "properties": {
                 "EditableOptions": "True"
