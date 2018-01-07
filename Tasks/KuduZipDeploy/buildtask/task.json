@@ -91,7 +91,7 @@
             "properties": {
                 "EditableOptions": "True"
             },                  
-            "helpMarkDown": "ZipDeploy used kudu sync and removes Old file. Zip just extracts a zip file",
+            "helpMarkDown": "ZipDeploy uses kudu sync and clean up old files. Zip extracts a zip file to path without removing old files."
         },
         {
             "name": "IsAsync",
@@ -109,7 +109,7 @@
             "required": false,
             "helpMarkDown": "Expand the zip file into a specified folder",
             "visibleRule": "ZipApi = Zip"
-        },
+        }
     ],
     "dataSourceBindings": [
         {
