@@ -46,5 +46,5 @@ if($addCreateDateBool){
 }
 
 $files | foreach {
-    $result | convertTo-Json > | Out-File -Encoding utf8 -FilePath $_
+    $result | convertTo-Json | Out-File -Encoding utf8 -FilePath $_
 }
