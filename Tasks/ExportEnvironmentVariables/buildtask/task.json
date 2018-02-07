@@ -2,9 +2,9 @@
   "id": "11d66388-1af0-4788-99e5-d361b9ea481a",
   "name": "ExportEnvironmentVariables",
   "friendlyName": "Export version info to a json file",
-  "description": "Export the Source version and other Build information tp a json file using the envrionment variables.",
+  "description": "Export the Source version and other Build information to a json file using the envrionment variables.",
   "author": "Arjan van Rijn",
-  "helpMarkDown": "Export the Source version and other Build information tp a json file using the envrionment variables.",
+  "helpMarkDown": "Export the Source version and other Build information to a json file using the envrionment variables.",
   "category": "Build",
   "visibility": [
     "Build",
