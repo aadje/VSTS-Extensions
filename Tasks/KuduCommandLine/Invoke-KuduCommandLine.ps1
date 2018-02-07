@@ -71,5 +71,8 @@ $response = Invoke-WebRequest `
     -TimeoutSec $Timeout `
     -UseBasicParsing
 
-Write-Host "Response: $($response.StatusCode) $($response.StatusDescription) `n$($response.Content)"
+Write-Host "Response: $($response.StatusCode) $($response.StatusDescription)"
+$response.Content | ConvertFrom-Json | Format-List
+
+
 
